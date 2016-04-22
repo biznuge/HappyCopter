@@ -18,6 +18,9 @@ var rtHeld;	//is the user holding a turn right command
 var fwdHeld;	//is the user holding a forward command
 var bwdHeld;	//is the user holding a backward command
 
+var externalInputToggle = false;
+var externalInputValue = false;
+
 var mainFPS = 40;
 
 //var timeToRock;	//difficulty adjusted version of ROCK_TIME
@@ -61,7 +64,7 @@ function init() {
     window.onresize = resizeHandler;
     resizeHandler();
     
-    console.log("here");
+    //console.log("here");
     stage = new createjs.Stage(canvas);
     
     helicopter = new Helicopter();
@@ -69,7 +72,7 @@ function init() {
     stage.update();
     
     
-    console.log("here 2");
+    //console.log("here 2");
     
     //stage.addChild(messageField);
     //stage.update(); //update the stage to show text
@@ -152,59 +155,33 @@ function init() {
 
     //createjs.Ticker.useRAF = true;
     createjs.Ticker.setFPS(mainFPS);
-    //console.log("starting ticker");
-    //start game timer
     if (!createjs.Ticker.hasEventListener("tick")) {
-        //creatship.thrustejs.Ticker.addEventListener("tick", tick);
-        //console.log("started ticker");
         createjs.Ticker.addEventListener("tick", tick);
     }
 
 }
 
-/*function wrap(){
-    if (ship.x<0){
-        ship.x = canvas.width;
-    }
-    if (ship.x>canvas.width){
-        ship.x = 0;
-    }
-    if (ship.y<0){
-        ship.y = canvas.height;
-    }
-    if (ship.y>canvas.height){
-        ship.y = 0;
-    }
-}*/
-
-//var latch = false;
 
 function tick(event) {
-    
-    //console.log("tick");
-    
-    //if ( !latch ){ 
-    
-        //latch = true;
-        
-        for (var i = 0; i < stage.children.length; i++){
+            
+    for (var i = 0; i < stage.children.length; i++){
 
-            var o = stage.children[i];        
+        var o = stage.children[i];        
 
-            if (o.tick){
-                //if (!this.outOfBounds(o, this.backgroundShape)){
-                    //this.placeInBounds(o, this.backgroundShape);
-                //}
-                o.tick(event);                        
-            }
-
+        if (o.tick){            
+            o.tick(event);                        
         }
 
-        stage.update(event);
+    }
 
-    //}
-    
-	
+
+    if (externalInputToggle){
+        fwdHeld = externalInputValue;            
+    }
+
+
+    stage.update(event);
+
 }
 
 
@@ -214,36 +191,64 @@ function tick(event) {
 //allow for WASD and arrow control scheme
 function handleKeyDown(e) {
     //cross browser issues exist
-    if(!e){ var e = window.event; }
-        switch(e.keyCode) {
-            case KEYCODE_SPACE:	shootHeld = true; return false;
-            case KEYCODE_A:
-            case KEYCODE_LEFT:	lfHeld = true; return false;
-            case KEYCODE_D:
-            case KEYCODE_RIGHT: rtHeld = true; return false;
-            case KEYCODE_W:
-            case KEYCODE_UP:	fwdHeld = true; return false;
-            case KEYCODE_S:
-            case KEYCODE_DOWN:	bwdHeld = true; break;
-            case KEYCODE_ENTER:	if(canvas.onclick === handleClick){ handleClick(); }return false;
+    
+    if (externalInputToggle){
+        //externalInputToggle = false;
+        //var externalInputValue = false;
+        
+        //if (externalInputValue){
+            fwdHeld = externalInputValue;
+        //}
+        
+    }else{
+    
+        if(!e){ var e = window.event; }
+            switch(e.keyCode) {
+                case KEYCODE_SPACE:	shootHeld = true; return false;
+                case KEYCODE_A:
+                case KEYCODE_LEFT:	lfHeld = true; return false;
+                case KEYCODE_D:
+                case KEYCODE_RIGHT: rtHeld = true; return false;
+                case KEYCODE_W:
+                case KEYCODE_UP:	fwdHeld = true; return false;
+                case KEYCODE_S:
+                case KEYCODE_DOWN:	bwdHeld = true; break;
+                case KEYCODE_ENTER:	if(canvas.onclick === handleClick){ handleClick(); }return false;
+        }
+        
     }
+    
 }
 
 function handleKeyUp(e) {
-    //cross browser issues exist
-    if(!e){ var e = window.event; }
-    //console.log("e.keyCode: ", e.keyCode);    
-    switch(e.keyCode) {
-            case KEYCODE_SPACE:	shootHeld = false; break;
-            case KEYCODE_A:
-            case KEYCODE_LEFT:	lfHeld = false; break;
-            case KEYCODE_D:
-            case KEYCODE_RIGHT: rtHeld = false; break;
-            case KEYCODE_W:
-            case KEYCODE_UP:	fwdHeld = false; break;
-            case KEYCODE_S:
-            case KEYCODE_DOWN:	bwdHeld = false; break;
+    
+    if (externalInputToggle){
+        //externalInputToggle = false;
+        //var externalInputValue = false;
+        
+        //if (externalInputValue){
+            fwdHeld = externalInputValue;
+        //}
+        
+    }else{
+    
+        //cross browser issues exist
+        if(!e){ var e = window.event; }
+        //console.log("e.keyCode: ", e.keyCode);    
+        switch(e.keyCode) {
+                case KEYCODE_SPACE:	shootHeld = false; break;
+                case KEYCODE_A:
+                case KEYCODE_LEFT:	lfHeld = false; break;
+                case KEYCODE_D:
+                case KEYCODE_RIGHT: rtHeld = false; break;
+                case KEYCODE_W:
+                case KEYCODE_UP:	fwdHeld = false; break;
+                case KEYCODE_S:
+                case KEYCODE_DOWN:	bwdHeld = false; break;
+        }
+        
     }
+    
 }
 
 
