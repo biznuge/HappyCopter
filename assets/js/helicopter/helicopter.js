@@ -8,7 +8,17 @@
         
         p.type = "helicopter";
         p.damage = 50;       
+        
         p.helicopterShape = null;
+        p.rotorContainer = null;
+        p.bodyContainer = null;
+        p.tailContainer = null;
+    
+        p.tail_l1_txt = null;
+        p.tail_l2_txt = null;
+    
+        p.tailRotorContainer = null;
+    
         p.ship = null;
         p.RADIUS = 20;
         p.VELOCITY = 2;
@@ -28,6 +38,10 @@
         p.THRUST_FORCE = 15;
         p.GRAVITY_INCREMENTAL = p.GRAVITY / 30;    
         p.THRUST_FORCE_INCREMENTAL = p.THRUST_FORCE / 30;
+    
+        p.rotorMax = 6;
+        p.rotorMin = -6;
+        p.rotorCount = p.rotorMin;
         
 // constructor:
 	p.Container_initialize = p.initialize;	//unique to avoid overiding base class
@@ -57,8 +71,66 @@
 
             this.helicopterShape = new createjs.Shape();
             
-            this.addChild(this.helicopterShape);
+            this.bodyContainer = new createjs.Container();
+            var bodytxt = new createjs.Text("LOL", "30px Courier", "#FFF");
+            this.bodyContainer.addChild(bodytxt);            
+            this.addChild(this.bodyContainer);
+            this.bodyContainer.x = -20;
+            //this.addChild(this.helicopterShape);
             
+            this.rotorContainer = new createjs.Container();
+            var rotortxt = new createjs.Text("ROFL:ROFL::ROFL:ROFL", "15px Courier", "#FFF");
+            this.rotorContainer.addChild(rotortxt);            
+            this.addChild(this.rotorContainer);
+            var b = rotortxt.getBounds();
+            rotortxt.x = - b.width/2; 
+            rotortxt.y = - 15
+            
+            
+            this.tailContainer = new createjs.Container();
+            var tailtxt = new createjs.Text("PMSLROFLMAO", "11px Courier", "#FFF");
+            this.tailContainer.addChild(tailtxt);            
+            this.addChild(this.tailContainer);
+            tailtxt.x = -100; 
+            tailtxt.y = 5;
+        //var b = tailtxt.getBounds();
+            //rotortxt.x = - b.width/2; 
+            //rotortxt.y = - 15
+            
+            this.skidsContainer = new createjs.Container();
+            var skidstxt = new createjs.Text("lol:lol:lol:LOL", "9px Courier", "#FFF");
+            this.skidsContainer.addChild(skidstxt);            
+            this.addChild(this.skidsContainer);
+            skidstxt.x = -25;  
+            skidstxt.y = 30;
+        
+        
+            this.tailRotorContainer = new createjs.Container();
+            this.tail_l1_txt = new createjs.Text("l", "9px Courier", "#FFF");
+            var tail_0_txt = new createjs.Text("0", "9px Courier", "#FFF");
+            this.tail_l2_txt = new createjs.Text("l", "9px Courier", "#FFF");
+                    
+            this.tailRotorContainer.addChild(this.tail_l2_txt);            
+            this.tailRotorContainer.addChild(tail_0_txt);            
+            this.tailRotorContainer.addChild(this.tail_l2_txt);            
+            
+            this.addChild(this.tailRotorContainer);
+            
+            this.tail_l1_txt.x = -10;
+            this.tail_l1_txt.y = -10;
+            
+            this.tail_l2_txt.x = 10;
+            this.tail_l2_txt.y = 10;
+        
+            this.tailRotorContainer.x = -107;
+            this.tailRotorContainer.y = 6;
+        
+        
+            
+            
+            
+            //text.y = height - b.height/2;
+        
             //console.log(this);
             
             this.makeShape();	
@@ -115,8 +187,32 @@
             this.lifeSpan--;*/
         
             //this.x
+           
+            if (this.tail_l1_txt.y == 10){
+                this.tail_l1_txt.y = -10;
+                this.tail_l2_txt.y = 10;
+            }else{
+                this.tail_l1_txt.y = 10;
+                this.tail_l2_txt.y = -10;
+            }
+    
+        
+        
+        //this.tailRotorContainer.rotation += 90;
             
-            
+        //p.rotorMax = 4;
+        //p.rotorCount = 0;
+        
+        if (this.rotorCount<=this.rotorMax){
+            this.rotorCount++;
+        }else{
+            this.rotorCount = 1;
+        }
+        
+        this.rotorContainer.scaleX = 1 / this.rotorCount;
+        
+        //this.rotorCount
+        
         
             
             
@@ -172,6 +268,12 @@
                 
             }
         
+            //if (){
+                
+            //}
+        
+        
+            // fix shiznitz if out of bounds. tends towards bounds to bring object back into view.
             //if (){
                 
             //}
