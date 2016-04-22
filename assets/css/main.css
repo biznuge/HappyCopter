@@ -1,0 +1,39 @@
+html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, button, pre, a, abbr, acronym, address, code, del, dfn, img, q, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, caption {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	outline: 0;
+	font-weight: inherit;
+	font-style: inherit;
+	font-size: 100%;
+	font-family: inherit;
+}
+
+html, body {
+	height: 100%;
+	background-color:#000;	
+}
+
+body{
+	font-family:Arial,Helvetica,sans-serif;
+	font-size:62.5%;	
+}
+
+#container {
+	position: relative;		
+}
+html>body #container {
+    width:100vw;
+    height:100vh;
+}
+
+#container #page{
+    width:100vw;
+    height:100vh;
+}
+
+#gameCanvas{
+    width:100vw;
+    height:100vh;
+}
+
